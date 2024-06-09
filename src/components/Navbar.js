@@ -4,15 +4,17 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-
 import Button from "@/components/Button";
+import { usePathname } from 'next/navigation';
 
 const Navbar = () => {
     const [isClick, setIsClick] = useState(false);
     const [activeNav, setActiveNav] = useState('/');
     const [isScrolled, setIsScrolled] = useState(false);
+    const [shouldScrollToLaporan, setShouldScrollToLaporan] = useState(false);
     const navOutside = useRef();
     const router = useRouter();
+    const pathname = usePathname();
 
     const toggleNavbar = () => {
         setIsClick(!isClick);
@@ -21,18 +23,23 @@ const Navbar = () => {
     const handleNavClick = (navItem) => {
         setActiveNav(navItem);
         if (navItem === 'laporan') {
-            handleScrollToLaporan();
+            if (pathname !== '/') {
+                setShouldScrollToLaporan(true);
+                router.push('/#laporan');
+            } else {
+                handleScrollToLaporan();
+            }
+        } else {
+            router.push(navItem);
         }
+        toggleNavbar();
     };
 
     const handleScrollToLaporan = () => {
         const laporanSection = document.getElementById('laporan');
         if (laporanSection) {
             laporanSection.scrollIntoView({ behavior: 'smooth' });
-        } else {
-            router.push('/#laporan', undefined, { scroll: false });
         }
-        toggleNavbar();
     };
 
     useEffect(() => {
@@ -58,6 +65,20 @@ const Navbar = () => {
             window.removeEventListener("scroll", handleScroll);
         };
     }, []);
+
+    // Effect to update activeNav based on current route
+    useEffect(() => {
+        const currentPath = window.location.pathname;
+        setActiveNav(currentPath);
+    }, [router]);
+
+    // Effect to handle scroll to laporan after navigation
+    useEffect(() => {
+        if (shouldScrollToLaporan && pathname === '/') {
+            handleScrollToLaporan();
+            setShouldScrollToLaporan(false);
+        }
+    }, [pathname, shouldScrollToLaporan]);
 
     return (
         <>
