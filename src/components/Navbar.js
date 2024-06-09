@@ -10,6 +10,7 @@ import Button from "@/components/Button";
 const Navbar = () => {
     const [isClick, setIsClick] = useState(false);
     const [activeNav, setActiveNav] = useState('/');
+    const [isScrolled, setIsScrolled] = useState(false);
     const navOutside = useRef();
     const router = useRouter();
 
@@ -36,10 +37,7 @@ const Navbar = () => {
 
     useEffect(() => {
         const handleOutsideClick = (event) => {
-            if (
-                navOutside.current &&
-                !navOutside.current.contains(event.target)
-            ) {
+            if (navOutside.current && !navOutside.current.contains(event.target)) {
                 setIsClick(false);
             }
         };
@@ -50,9 +48,24 @@ const Navbar = () => {
         };
     }, []);
 
+    useEffect(() => {
+        const handleScroll = () => {
+            setIsScrolled(window.scrollY > 50);
+        };
+
+        window.addEventListener("scroll", handleScroll);
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+        };
+    }, []);
+
     return (
         <>
-            <nav ref={navOutside} className="h-[60px] sm:h-[80px] md:h-[90px] fixed flex justify-center items-center py-4 sm:py-7 md:py-5 top-0 inset-x-0 z-50 border-2 transition-all duration-300">
+            <nav
+                ref={navOutside}
+                className={`h-[60px] sm:h-[80px] md:h-[90px] fixed flex justify-center items-center py-4 sm:py-7 md:py-5 top-0 inset-x-0 z-50 transition-all duration-300 ${isScrolled ? "bg-white" : "bg-transparent"
+                    }`}
+            >
                 <div className="w-full container mx-auto">
                     <div className="h-full w-full flex justify-between items-center">
                         <Link href="/">
@@ -69,7 +82,7 @@ const Navbar = () => {
                             <ul className="md:flex items-center space-x-4 hidden">
                                 <Link href="/">
                                     <li
-                                        className={`${activeNav === '/' ? 'font-bold underline' : 'font-normal'} text-base p-4 text-[#00408A]`}
+                                        className={`${activeNav === '/' ? 'font-bold underline underline-offset-2' : 'font-normal'} text-base p-4 text-[#00408A]`}
                                         onClick={() => handleNavClick('/')}
                                     >
                                         Home
@@ -77,14 +90,14 @@ const Navbar = () => {
                                 </Link>
                                 <Link href="/trending">
                                     <li
-                                        className={`${activeNav === '/trending' ? 'font-bold underline' : 'font-normal'} text-base p-4 text-[#0055B8]`}
+                                        className={`${activeNav === '/trending' ? 'font-bold underline underline-offset-2' : 'font-normal'} text-base p-4 text-[#0055B8]`}
                                         onClick={() => handleNavClick('/trending')}
                                     >
                                         Trendings
                                     </li>
                                 </Link>
                                 <li
-                                    className={`${activeNav === 'laporan' ? 'font-bold underline' : 'font-normal'} text-base p-4 text-[#0055B8] cursor-pointer`}
+                                    className={`${activeNav === 'laporan' ? 'font-bold underline underline-offset-2' : 'font-normal'} text-base p-4 text-[#0055B8] cursor-pointer`}
                                     onClick={() => handleNavClick('laporan')}
                                 >
                                     Laporan
@@ -157,8 +170,7 @@ const Navbar = () => {
                                 </Link>
                                 <Link href="/trending">
                                     <li
-                                        className={`${activeNav === '/trending' ? 'font-bold underline' : 'font-normal'}
-                                    text-base px-2 py-4 text-white`}
+                                        className={`${activeNav === '/trending' ? 'font-bold underline' : 'font-normal'} text-base px-2 py-4 text-white`}
                                         onClick={() => handleNavClick('/trending')}
                                     >
                                         Trendings
