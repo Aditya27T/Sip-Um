@@ -162,7 +162,7 @@ const Navbar = () => {
                             <ul className="pt-[160px]">
                                 <Link href="/">
                                     <li
-                                        className={`${activeNav === '/' ? 'font-bold underline' : 'font-normal'} text-base px-2 py-4 text-white`}
+                                        className={`${activeNav === '/' ? 'font-bold underline underline-offset-2' : 'font-normal'} text-base px-2 py-4 text-white`}
                                         onClick={() => handleNavClick('/')}
                                     >
                                         Home
@@ -170,14 +170,14 @@ const Navbar = () => {
                                 </Link>
                                 <Link href="/trending">
                                     <li
-                                        className={`${activeNav === '/trending' ? 'font-bold underline' : 'font-normal'} text-base px-2 py-4 text-white`}
+                                        className={`${activeNav === '/trending' ? 'font-bold underline underline-offset-2' : 'font-normal'} text-base px-2 py-4 text-white`}
                                         onClick={() => handleNavClick('/trending')}
                                     >
                                         Trendings
                                     </li>
                                 </Link>
                                 <li
-                                    className={`${activeNav === 'laporan' ? 'font-bold underline' : 'font-normal'} text-base px-2 py-4 text-white cursor-pointer`}
+                                    className={`${activeNav === 'laporan' ? 'font-bold underline underline-offset-2' : 'font-normal'} text-base px-2 py-4 text-white cursor-pointer`}
                                     onClick={() => handleNavClick('laporan')}
                                 >
                                     Laporan
