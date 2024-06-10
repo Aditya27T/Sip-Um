@@ -1,5 +1,3 @@
-import { comment } from "postcss";
-
 export const initialData = [
     {
         id: 1, namaUser: "User 1", status: "Pending", thumbnail: "/assets/images/thumbnail_1.jpg",

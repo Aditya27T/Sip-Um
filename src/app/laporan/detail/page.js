@@ -1,15 +1,15 @@
 "use client";
-"use strict";
 import React from 'react';
 import { useSearchParams } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
 import { Icon } from '@iconify/react';
 
 import { initialData } from "@/app/api/laporan/data";
 import Navbar from "@/components/Navbar";
 import Button from "@/components/Button";
 import Dropdown from '@/components/Dropdown';
-import styles from "@/app/trending/trending.module.css";
+import styles from "@/app/laporan/laporan.module.css";
 
 
 export default function DetailLaporanPage() {
@@ -25,12 +25,13 @@ export default function DetailLaporanPage() {
 
     if (!item) {
         return (
-            <div className="w-full h-screen flex justify-center items-center">
-                <p className="font-bold font-2xl text-center">Data tidak ditemukan</p>
-                <Button className="mt-5" onClick={() => router.push("/trending")}>Kembali</Button>
+            <div className="w-full h-screen flex flex-col justify-center items-center">
+                <p className="font-bold text-3xl text-center">Data tidak ditemukan</p>
+                <Button className="mt-5 py-2 px-10 rounded-md text-white bg-[#00408A]">
+                    <Link href="/laporan">Kembali</Link>
+                </Button>
             </div>
         )
-
     }
 
     return (
@@ -69,35 +70,37 @@ export default function DetailLaporanPage() {
                                 />
                             </div>
                             <p>{item.deskripsi}</p>
-                            <div id="comment" className="w-full h-auto flex flex-col justify-around px-[100px] pt-[30px] pb-[50px] border-2 bg-white">
-                                <div className="w-full h-[100px] flex justify-between items-center border-b-2">
-                                    <p className="font-bold text-[14px]">{item.comment} Comments</p>
-                                    <div className="w-auto h-auto flex justify-start items-center gap-5">
-                                        <p className="font-medium text-[14px] text-[#4B4F56]">Sort By</p>
-                                        <Dropdown />
-                                    </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="comment" className="w-full h-auto flex justify-center items-center py-16">
+                    <div className="container mx-auto">
+                        <div className="w-full h-auto flex flex-col justify-around px-[100px] pt-[30px] pb-[50px] border-2 bg-white">
+                            <div className="w-full h-[100px] flex justify-between items-center border-b-2">
+                                <p className="font-bold text-[14px]">{item.comment} Comments</p>
+                                <div className="w-auto h-auto flex justify-start items-center gap-5">
+                                    <p className="font-medium text-[14px] text-[#4B4F56]">Sort By</p>
+                                    <Dropdown />
                                 </div>
-                                <form className="w-full h-auto">
-                                    {/* container comments */}
-                                    <div className="px-28">
-                                        <div class="space-y-12">
-                                            <div class="pb-5">
-                                                <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                                                    <div class="col-span-full">
-                                                        <div class="mt-2">
-                                                            <textarea id="about" name="about" rows="3" placeholder="Add a commnet..." class="block w-full rounded-md border-0 py-3 px-6 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-[1px] focus:ring-inset focus:ring-[#4777DE] sm:text-sm sm:leading-6"></textarea>
-                                                        </div>
-                                                    </div>
+                            </div>
+                            <form className="w-full h-auto">
+                                {/* container comments */}
+                                <div className="px-28">
+                                    <div class="space-y-12">
+                                        <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                                            <div class="col-span-full">
+                                                <div class="mt-2">
+                                                    <textarea id="about" name="about" rows="3" placeholder="Add a commnet..." class="block w-full border-0 py-3 px-6 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-[1px] focus:ring-inset focus:ring-[#4777DE] sm:text-sm sm:leading-6"></textarea>
                                                 </div>
                                             </div>
                                         </div>
-
-                                        <div class="mt-6 flex items-center justify-end gap-x-6">
-                                            <button type="submit" class="rounded-md bg-[#00408A] px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-[#4777DE] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Save</button>
-                                        </div>
                                     </div>
-                                </form>
-                            </div>
+                                    <div class="h-[90px] flex items-end justify-end pb-[10px] pr-[20px] bg-[#2d394c13]">
+                                        <button type="submit" class="rounded-md bg-[#00408A] px-[25px] py-2 text-sm font-semibold text-white shadow-sm hover:bg-[#4777DE] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Post</button>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </section>

@@ -1,11 +1,13 @@
 "use client";
 import * as React from "react";
 import { useState, useEffect, useRef } from "react";
+import { usePathname } from 'next/navigation';
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+
 import Button from "@/components/Button";
-import { usePathname } from 'next/navigation';
+
 
 const Navbar = () => {
     const [isClick, setIsClick] = useState(false);
@@ -33,14 +35,23 @@ const Navbar = () => {
             router.push(navItem);
         }
         toggleNavbar();
-    };
+    };   
 
     const handleScrollToLaporan = () => {
         const laporanSection = document.getElementById('laporan');
         if (laporanSection) {
-            laporanSection.scrollIntoView({ behavior: 'smooth' });
+            const offset = -50;
+            const bodyRect = document.body.getBoundingClientRect().top;
+            const elementRect = laporanSection.getBoundingClientRect().top;
+            const elementPosition = elementRect - bodyRect;
+            const offsetPosition = elementPosition + offset;
+    
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
+            });
         }
-    };
+    };    
 
     useEffect(() => {
         const handleOutsideClick = (event) => {
@@ -66,19 +77,27 @@ const Navbar = () => {
         };
     }, []);
 
-    // Effect to update activeNav based on current route
     useEffect(() => {
         const currentPath = window.location.pathname;
         setActiveNav(currentPath);
     }, [router]);
 
-    // Effect to handle scroll to laporan after navigation
     useEffect(() => {
         if (shouldScrollToLaporan && pathname === '/') {
-            handleScrollToLaporan();
-            setShouldScrollToLaporan(false);
+            setTimeout(() => {
+                handleScrollToLaporan();
+                setShouldScrollToLaporan(false);
+            }, 300);
         }
     }, [pathname, shouldScrollToLaporan]);
+
+    useEffect(() => {
+        if (window.location.hash === '#laporan') {
+            setTimeout(() => {
+                handleScrollToLaporan();
+            }, 300);
+        }
+    }, []);
 
     return (
         <>
@@ -91,12 +110,12 @@ const Navbar = () => {
                     <div className="h-full w-full flex justify-between items-center">
                         <Link href="/">
                             <Image
-                                src="/assets/images/logo-sipum.png"
+                                src="/logo-univ.svg"
                                 alt="Logo Universitas"
                                 width={131}
                                 height={72}
                                 responsive="true"
-                                className="w-[50px] h-[27px] sm:w-[70px] sm:h-[35px] md:w-[131px] md:h-[72px] cursor-pointer object-contain"
+                                className="w-[90px] h-[90px] sm:w-[70px] sm:h-[35px] md:w-[131px] md:h-[72px] cursor-pointer object-contain"
                             />
                         </Link>
                         <div className="md:flex items-center space-x-16 hidden">
@@ -123,6 +142,7 @@ const Navbar = () => {
                                 >
                                     Laporan
                                 </li>
+                                {/* Kie gawe kondisi juga, misal wis login, ganti profile e */}
                                 <Link href="/login">
                                     <Button className="font-normal h-10 px-6 rounded-[6px] bg-[#00408A] text-white">
                                         Log In

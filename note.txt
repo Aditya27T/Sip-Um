@@ -1,5 +1,15 @@
-- handle ui logim
-- handle dashboard
-- handle page create laporan
-- handle bug nav ke laporan home dari page lain 
-- handle bug dropdown
+- handle ui landing page DONE
+- handle responsive ui landing page DONE 
+- hadle ui trending page DONE
+- handle responsive ui trending page DERENGGGG
+- handle ui detail laporan DONE 
+- handle responsive ui detail laporan
+- handle ui login DONE (must be improve dit)
+- handle ui create data laporan DONE (must be improve dit)
+- handle title dan logo website DONE
+
+- handle componen search data DONE
+- handle componen button data DONE
+- handle componen card data DONE
+- handle componen dropdown data DONE
+- handle componen sidebar data DONE
