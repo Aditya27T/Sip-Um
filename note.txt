@@ -1,0 +1,5 @@
+- handle ui logim
+- handle dashboard
+- handle page create laporan
+- handle bug nav ke laporan home dari page lain 
+- handle bug dropdown
