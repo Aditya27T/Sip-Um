@@ -2,8 +2,10 @@ const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
-const logger = require('morgan');
-const db = require('./database/mysql/db');
+const logger = require('./helpers/utils/logger');
+const wrapper = require('./helpers/utils/wrapper');
+const cookieSession = require('cookie-session');
+const db = require('./models');
 
 const indexRouter = require('./routes/index');
 
@@ -13,7 +15,6 @@ const app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use((req, res, next) => {
@@ -24,6 +25,25 @@ app.use((req, res, next) => {
 });
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(cookieSession({
+  name: "secret-session",
+  httpOnly: true,
+  secret: "secret",
+}));
+
+/**
+ * initialize models
+ */
+db.sequelize.authenticate()
+  .then(() => {
+    logger.info('Connection has been established successfully.');
+    db.sequelize.sync( {force: false} ).then(() => {
+      logger.info('Drop and re-sync db.');
+    });
+  })
+  .catch((err) => {
+    logger.error('Unable to connect to the database:', err);
+});
 
 app.use('/', indexRouter);
 
@@ -39,8 +59,8 @@ app.use(function(err, req, res, next) {
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+  wrapper.response(res, 500, 'error', err.message);
+  
 });
 
 module.exports = app;
