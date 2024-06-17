@@ -5,7 +5,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('./helpers/utils/logger');
 const wrapper = require('./helpers/utils/wrapper');
 const cookieSession = require('cookie-session');
-const db = require('./models');
+const db = require('./app/models');
 
 const indexRouter = require('./routes/index');
 
@@ -36,9 +36,9 @@ app.use(cookieSession({
  */
 db.sequelize.authenticate()
   .then(() => {
-    logger.info('Connection has been established successfully.');
+    logger.log('info', 'Connection has been established successfully.');
     db.sequelize.sync( {force: false} ).then(() => {
-      logger.info('Drop and re-sync db.');
+      logger.log('info', 'Database sync successfully.');
     });
   })
   .catch((err) => {
@@ -59,7 +59,7 @@ app.use(function(err, req, res, next) {
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // render the error page
-  wrapper.response(res, 500, 'error', err.message);
+  wrapper.response(res, 'fail', wrapper.error(err), err.message, err.status || 500);
   
 });
 

@@ -35,5 +35,5 @@ const error = (context, message, error) => {
 
 module.exports = {
     log,
-    error
+    error 
 }
