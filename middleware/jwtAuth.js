@@ -2,7 +2,7 @@ const jsonwebtoken = require('jsonwebtoken');
 const { error } = require('../helpers/utils/logger');
 const { JWT_SECRET } = require('../config/auth.config.cjs');
 const wrapper = require('../helpers/utils/wrapper');
-const { User } = require('../models');
+const { User } = require('../app/models');
 
 /**
  * Middleware to authenticate user using JWT

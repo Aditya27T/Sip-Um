@@ -5,8 +5,8 @@ const user = require('./users');
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { 
-    title: 'Selamat Datang di Aplikasi Node.js',
-    message: 'Silahkan klik menu user untuk melihat data user'
+    title: 'Hello World!',
+    message: '<h1>Hello World!</h1>'
   });
 });
 
