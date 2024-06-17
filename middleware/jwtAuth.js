@@ -9,26 +9,25 @@ const { User } = require('../app/models');
  * 
  */
 
-const jwtAuth = async (req, res, next) => {
-    let token = req.session.token;
+const jwtAuth = { 
+    async verifyToken(req, res, next) {
+        const token = req.session.token;
 
-    if(!token) {
-        return wrapper.error(res, 'Invalid Token', null, 403);
-    } 
-
-    try {
-        const decoded = jsonwebtoken.verify(token, JWT_SECRET);
-        const user = await User.findOne({ where: { id: decoded.id } });
-
-        if(!user) {
-            return wrapper.error(res, 'Unauthorized', null, 401);
+        if (!token) {
+            return wrapper.response(res, 401, 'Unauthorized!');
         }
 
-        req.user = user;
-        next();
-    } catch (err) {
-        error('jwtAuth', err.message, err);
-        return wrapper.error(res, 'Bad Request', null, 400);
+        jsonwebtoken.verify(token, JWT_SECRET, async (err, decoded) => {
+            if (err) {
+                return wrapper.response(res, 401, 'Unauthorized!');
+            }
+            const user = await User.findByPk(decoded.id);
+            if (!user) {
+                return res.status(404).send({ message: 'User not found' });
+            }
+            req.user = user;
+            next();
+        });
     }
 }
 
