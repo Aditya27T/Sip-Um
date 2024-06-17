@@ -1,10 +1,9 @@
 const express = require('express');
 const router = express.Router();
+const controller = require('../app/controllers/auth.controller');
+const { jwtAuth } = require('../middleware/jwtAuth');
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
-});
+router.post('/login', controller.login);
 
 
 module.exports = router;
