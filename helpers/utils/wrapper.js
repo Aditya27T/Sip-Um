@@ -11,21 +11,20 @@ const paginationData = (data, page, limit, totalData) => ({err:null, data, page,
  */
 const error = (err) => ({err, data:null});
 
-const response = (res, type, result, message = '', responseCode = 200) => {
+// response code for success and error response like 200, 400, 500, etc and data for response data
+const response = (res, result, message = '', responseCode = 200) => {
     let status = true;
-    let data = result.data;
-    let code = responseCode;
-    if (type === 'fail') {
+    let data = result.data || '';
+    if (result.type === 'fail') {
         const errCode = checkErrorCode(result.err);
         status = false;
         data = result.err && result.err.data ? result.err.data : '';
         message = result.err && result.err.message ? result.err.message : message;
-        code = result.err && result.err.code ? result.err.code : errCode;
-        responseCode = errCode;
-    } else {
-        res.send(responseCode, { success: status, data, message, code });
+        responseCode = result.err && result.err.code ? result.err.code : errCode;
     }
+    res.status(responseCode).send({ success: status, data, message, code: responseCode });
 };
+
 
 const paginationResponse = (res, type, result, message = 'Success', code = 200) => {
     let status = true;
@@ -38,7 +37,7 @@ const paginationResponse = (res, type, result, message = 'Success', code = 200) 
         code = result.err && result.err.code ? result.err.code : errCode;
         responseCode = errCode;
     } else {
-        res.send(responseCode, { success: status, data, message, code, page: result.page, limit: result.limit, totalData: result.totalData });
+        res.status(code).send({ success: status, data, message, code, page: result.page, limit: result.limit, totalData: result.totalData });
     }
 };
 

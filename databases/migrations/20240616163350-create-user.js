@@ -14,12 +14,6 @@ module.exports = {
       username: {
         type: Sequelize.STRING
       },
-      firstName: {
-        type: Sequelize.STRING
-      },
-      lastName: {
-        type: Sequelize.STRING
-      },
       email: {
         type: Sequelize.STRING,
         validate: {
@@ -34,8 +28,8 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      emailVerified: {
-        type: Sequelize.BOOLEAN
+      emailVerifiedat: {
+        type: Sequelize.DATE
       },
       createdAt: {
         allowNull: false,

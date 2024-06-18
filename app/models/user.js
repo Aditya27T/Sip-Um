@@ -23,22 +23,6 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: { msg: 'Username is required' }
       }
     },
-    firstName: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notNull: { msg: 'First name cannot be null' },
-        notEmpty: { msg: 'First name is required' }
-      }
-    },
-    lastName: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notNull: { msg: 'Last name cannot be null' },
-        notEmpty: { msg: 'Last name is required' }
-      }
-    },
     email: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -50,11 +34,6 @@ module.exports = (sequelize, DataTypes) => {
         isEmail: {
           msg: 'Invalid email format'
         },
-        isUmEmail(value) {
-          if (!value.endsWith('@students.um.ac.id')) {
-            throw new Error('Email must be from UM students domain');
-          }
-        }
       }
     },
     role: {
@@ -64,9 +43,9 @@ module.exports = (sequelize, DataTypes) => {
         notNull: { msg: 'Role cannot be null' },
         notEmpty: { msg: 'Role is required' }
       },
-      defaultValue: 'student',
+      defaultValue: 'user',
       isIn: {
-        args: [['student', 'lecturer', 'admin']],
+        args: [['user', 'admin']],
         msg: 'Invalid role'
       }
     },
@@ -78,9 +57,12 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: { msg: 'Password is required' }
       }
     },
-    emailVerified: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false
+    emailVerifiedat: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      validate: {
+        isDate: { msg: 'Invalid date format' }
+      }
     }
   }, {
     sequelize,

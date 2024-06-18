@@ -1,6 +1,6 @@
 const jsonwebtoken = require('jsonwebtoken');
 const { error } = require('../helpers/utils/logger');
-const { JWT_SECRET } = require('../config/auth.config.cjs');
+const { secret } = require('../config/auth.config.cjs');
 const wrapper = require('../helpers/utils/wrapper');
 const { User } = require('../app/models');
 
@@ -11,23 +11,27 @@ const { User } = require('../app/models');
 
 const jwtAuth = { 
     async verifyToken(req, res, next) {
-        const token = req.session.token;
-
-        if (!token) {
-            return wrapper.response(res, 401, 'Unauthorized!');
-        }
-
-        jsonwebtoken.verify(token, JWT_SECRET, async (err, decoded) => {
-            if (err) {
-                return wrapper.response(res, 401, 'Unauthorized!');
+        try {
+            const token = req.headers.authorization.split(' ')[1];
+            if (!token) {
+                return res.status(403).send({
+                    message: 'No token provided!'
+                });
             }
-            const user = await User.findByPk(decoded.id);
+            const decoded = jsonwebtoken.verify(token, secret);
+            const user = await User.findOne({ where: { id: decoded.id } });
             if (!user) {
-                return res.status(404).send({ message: 'User not found' });
+                return wrapper.response(res, 404, 'User not found', null);
             }
+
             req.user = user;
             next();
-        });
+        
+        } catch (err) {
+            return res.status(401).send({
+                message: 'Unauthorized!'
+            });
+        }
     }
 }
 
