@@ -8,6 +8,9 @@ const { development, test, production } = require("../../config/db.config.cjs");
  * for models import
  */
 const User = require("./user.js");
+const Report = require("./report.js");
+const ReportVote = require("./report_vote.js");
+const ReportProgress = require("./report_progress.js");
 
 const connection =
   env === "development" ? development : env === "test" ? test : production;
@@ -43,11 +46,18 @@ const db = {};
  * import models
  */
 db.User = User(sequelize, Sequelize.DataTypes);
+db.Report = Report(sequelize, Sequelize.DataTypes);
+db.ReportVote = ReportVote(sequelize, Sequelize.DataTypes);
+db.ReportProgress = ReportProgress(sequelize, Sequelize.DataTypes);
+
 
 /**
  * define associations
  */
 db.User.associate(db);
+db.Report.associate(db);
+db.ReportVote.associate(db);
+db.ReportProgress.associate(db);
 
 /**
  * export db object
