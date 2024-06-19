@@ -58,9 +58,7 @@ const MainLayout = ({ children }) => {
                                                 </Link>
                                             </li>
                                             <li>
-                                            <Link href="/">
-                                                <Button className="w-full h-10 px-6 font-normal rounded-[6px] bg-[#00408A] text-white">Log Out</Button>
-                                            </Link>
+                                            <Button className="w-full h-10 px-6 font-normal rounded-[6px] bg-[#00408A] text-white">Log Out</Button>
                                             </li>
                                         </ul>
                                     </div>
@@ -82,13 +80,6 @@ const MainLayout = ({ children }) => {
                                 href="/dashboard"
                                 icon={<BiSolidDashboard className="text-xl" />}
                                 title={'Dashboard'}
-                            />
-                        </li>
-                        <li>
-                            <MenuSidebar
-                                href="/profile"
-                                icon={<BsCalendar2EventFill className="text-xl" />}
-                                title={'Profile'}
                             />
                         </li>
                     </ul>

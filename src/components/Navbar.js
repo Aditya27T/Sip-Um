@@ -148,6 +148,11 @@ const Navbar = () => {
                                         Log In
                                     </Button>
                                 </Link>
+                                {/* <Link href="/logout">
+                                    <Button className="font-normal h-10 px-6 ml-[6px] mt-[20px] rounded-[6px] bg-white">
+                                        <p className="text-[#00408A]">Log Out</p>
+                                    </Button>
+                                </Link> */}
                             </ul>
                         </div>
                         <div
@@ -228,6 +233,11 @@ const Navbar = () => {
                                         <p className="text-[#00408A]">Log In</p>
                                     </Button>
                                 </Link>
+                                {/* <Link href="/logout">
+                                    <Button className="font-normal h-10 px-6 ml-[6px] mt-[20px] rounded-[6px] bg-white">
+                                        <p className="text-[#00408A]">Log Out</p>
+                                    </Button>
+                                </Link> */}
                             </ul>
                         </div>
                     </div>
