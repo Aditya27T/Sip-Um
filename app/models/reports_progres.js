@@ -10,18 +10,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      reports_progres.belongsTo(models.users, {
-        foreignKey: 'userId',
-        as: 'user',
-        onDelete: 'CASCADE',
-        onUpdate: 'CASCADE'
-      });
-      reports_progres.belongsTo(models.reports, {
-        foreignKey: 'reportId',
-        as: 'report',
-        onDelete: 'CASCADE',
-        onUpdate: 'CASCADE'
-      });
+      // 
     }
   }
   reports_progres.init({
@@ -33,6 +22,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'reports_progres',
+    tableName: 'reports_progress'
   });
   return reports_progres;
 };

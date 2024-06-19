@@ -10,18 +10,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      report_vote.belongsTo(models.users, {
-        foreignKey: 'userId',
-        as: 'user',
-        onDelete: 'CASCADE',
-        onUpdate: 'CASCADE'
-      });
-      report_vote.hasMany(models.reports, {
-        foreignKey: 'reportId',
-        as: 'report',
-        onDelete: 'CASCADE',
-        onUpdate: 'CASCADE'
-      });
+      // define association here
     }
   }
   report_vote.init({
@@ -30,6 +19,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'report_vote',
+    tableName: 'report_votes',
     indexes: [
       {
         unique: true,
