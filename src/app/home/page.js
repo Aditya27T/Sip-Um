@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { useSession, signIn } from 'next-auth/react';
 
 import { initialData } from "@/app/api/laporan/data";
 import Navbar from "@/components/Navbar";
@@ -11,7 +12,8 @@ import useDebounce from "@/hooks/debounce";
 import styles from "@/app/home/home.module.css";
 
 export default function Main() {
-  const [dataLaporan, setDataLaporan] = useState(initialData); // ini bisa dihapus nanti ketika data sudah ada dari API
+  const { data: session, status } = useSession();
+  const [dataLaporan, setDataLaporan] = useState(initialData); // iki iso dihapus dit, pas wis anggo API
   const [selectedType, setSelectedType] = useState("kehilangan");
   const [filteredDataLaporan, setFilteredDataLaporan] = useState([]);
   const [searchLaporan, setSearchLaporan] = useState("");
@@ -67,6 +69,10 @@ export default function Main() {
     setSearchLaporan(event.target.value);
   };
 
+  if (status === "loading") {
+    return <div className="w-full h-screen flex justify-center items-center">Loading...</div>;
+  }
+
   return (
     <>
       <Navbar />
@@ -81,7 +87,7 @@ export default function Main() {
               <span className="text-[#00408A]">SIP Reporting</span>
             </h1>
             {/* nang kene handle login, misal drng login / session / token laka, kudu login sek */}
-            <Link href="/login">
+            <Link href={session ? "/report-now" : "/login"}>
               <Button className="w-[150px] md:w-[200px] h-[40px] md:h-[60px] font-normal rounded-[32px] bg-[#00408A] text-center text-sm md:text-xl text-white">
                 Report Now
               </Button>
