@@ -1,5 +1,7 @@
 const express = require('express');
 const controller = require('../app/controllers/report.controller');
+const uploaders = require('../middleware/uploader');
+const uploadFile = require('../middleware/uploader');
 
 const router = express.Router();
 
@@ -19,7 +21,7 @@ router.get('/status/:status', controller.findAllReportsByStatus);
 router.get('/category/:category', controller.findAllReportsByCategory);
 
 // createReport
-router.post('/', controller.createReport);
+router.post('/add', uploadFile.single('image'), controller.createReport);
 
 // updateReport by id
 router.put('/:id',   controller.updateReport);
