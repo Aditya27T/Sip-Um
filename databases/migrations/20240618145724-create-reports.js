@@ -24,6 +24,9 @@ module.exports = {
       image: {
         type: Sequelize.STRING
       },
+      category: {
+        type: Sequelize.STRING
+      },
       userId: {
         type: Sequelize.INTEGER,
         references: {
@@ -32,6 +35,12 @@ module.exports = {
         },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
+      },
+      totalUpvotes: {
+        type: Sequelize.INTEGER
+      },
+      totalDownvotes: {
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,

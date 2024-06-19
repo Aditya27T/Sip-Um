@@ -16,6 +16,11 @@ module.exports = (sequelize, DataTypes) => {
   report_vote.init({
     userId: { type: DataTypes.INTEGER, allowNull: false},
     reportId: { type: DataTypes.INTEGER, allowNull: false},
+    downvoted: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false
+    }
   }, {
     sequelize,
     modelName: 'report_vote',

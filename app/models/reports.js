@@ -22,7 +22,13 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       defaultValue: 'pending'
     },
+    category: { 
+      type: DataTypes.ENUM('kerusakan', 'kehilangan'),
+      allowNull: false
+    },
     image: { type: DataTypes.STRING, allowNull: false},
+    totalUpvotes: { type: DataTypes.INTEGER, allowNull: false},
+    totalDownvotes: { type: DataTypes.INTEGER, allowNull: false},
     userId: { type: DataTypes.INTEGER, allowNull: false},
   }, {
     sequelize,

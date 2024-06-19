@@ -9,15 +9,15 @@ module.exports = {
         const password = bcrypt.hashSync('password', 10);
 
         // // add 1 admin user
-        users.push({
-            username: 'admin',
-            email: 'admin@students.um.ac.id',
-            password: bcrypt.hashSync('admin', 10),
-            role: 'admin',
-            emailVerifiedat: new Date(),
-            createdAt: new Date(),
-            updatedAt: new Date()
-        });
+        // users.push({
+        //     username: 'admin',
+        //     email: 'admin@students.um.ac.id',
+        //     password: bcrypt.hashSync('admin', 10),
+        //     role: 'admin',
+        //     emailVerifiedat: new Date(),
+        //     createdAt: new Date(),
+        //     updatedAt: new Date()
+        // });
         
         // add 3 lecturer users
         for (let i = 0; i < 3; i++) {
