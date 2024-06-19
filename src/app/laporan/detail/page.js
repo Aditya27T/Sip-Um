@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Icon } from '@iconify/react';
 
-import { initialData } from "@/app/api/laporan/data";
+import { getLaporanById } from "@/app/api/laporan/data";
 import Navbar from "@/components/Navbar";
 import Button from "@/components/Button";
 import styles from "@/app/laporan/laporan.module.css";
@@ -14,7 +14,7 @@ import styles from "@/app/laporan/laporan.module.css";
 export default function DetailLaporanPage() {
     const laporanId = useSearchParams().get("id");
     const id = laporanId ? parseInt(laporanId) : null; // kie hapus bae jane rpp dit, gawe ngetes tok
-    const item = initialData.find(item => item.id === id);
+    const item = getLaporanById.find(item => item.id === id);
 
     const formatDateLaporan = (dateString) => {
         const date = new Date(dateString);

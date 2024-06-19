@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useSession, signIn } from 'next-auth/react';
 
-import { initialData } from "@/app/api/laporan/data";
+import { getLaporan } from "@/app/api/laporan/data";
 import Navbar from "@/components/Navbar";
 import Button from "@/components/Button";
 import Search from "@/components/Search";
@@ -13,53 +13,40 @@ import styles from "@/app/home/home.module.css";
 
 export default function Main() {
   const { data: session, status } = useSession();
-  const [dataLaporan, setDataLaporan] = useState(initialData); // iki iso dihapus dit, pas wis anggo API
+  // const [dataLaporan, setDataLaporan] = useState(initialData); // iki iso dihapus dit, pas wis anggo API
   const [selectedType, setSelectedType] = useState("kehilangan");
   const [filteredDataLaporan, setFilteredDataLaporan] = useState([]);
-  const [searchLaporan, setSearchLaporan] = useState("");
+  const [searchLaporan, setSearchLaporan] = useState('');
   const debouncedSearchLaporan = useDebounce(searchLaporan, 500);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch data mgkn nang kene ae dit, misal wis ana API
-        // const response = await fetch('Link API');
-        // if (!response.ok) {
-        //     throw new Error('cannot fetch data from API');
-        // }
-        // const dataLaporan = await response.json();
+        const dataLaporan = await getLaporan(selectedType);
 
         const sortFilterLaporandata = dataLaporan
-          .filter((item) => item.type === selectedType)
-          .sort(
-            (recent, last) =>
-              new Date(last.createdAt) - new Date(recent.createdAt)
-          );
+          .filter(item => item.type === selectedType)
+          .sort((recent, last) => new Date(last.createdAt) - new Date(recent.createdAt));
 
         setFilteredDataLaporan(sortFilterLaporandata);
+
       } catch (error) {
-        console.error("error: ", error.message);
+
+        console.error('error: ', error.message);
       }
+
     };
 
     fetchData();
-  }, [dataLaporan, selectedType]); // mgko misal wis implementasi API, dataLaporan dihapus ae
+  }, [selectedType]);
 
   useEffect(() => {
-    const dataDebouce = dataLaporan
-      .filter(
-        (item) =>
-          item.type === selectedType &&
-          item.namaBarang
-            .toLowerCase()
-            .includes(debouncedSearchLaporan.toLowerCase())
-      )
-      .sort(
-        (recent, last) => new Date(last.createdAt) - new Date(recent.createdAt)
-      );
+    const dataDebouce = filteredDataLaporan
+      .filter(item => item.type === selectedType && item.namaBarang.toLowerCase().includes(debouncedSearchLaporan.toLowerCase()))
+      .sort((recent, last) => new Date(last.createdAt) - new Date(recent.createdAt));
 
     setFilteredDataLaporan(dataDebouce);
-  }, [debouncedSearchLaporan, selectedType, dataLaporan]);
+  }, [debouncedSearchLaporan, selectedType]);
 
   const handleTypeChange = (type) => {
     setSelectedType(type);
