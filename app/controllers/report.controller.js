@@ -64,14 +64,18 @@ const findAllReportsByCategory = async (req, res) => {
 // createReport
 const createReport = async (req, res) => {
     try {
+        if (!req.file) {
+            return res.status(400).send({ message: 'Please upload a file!' });
+        }
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(422).json({ message: 'Validation error', errors: errors.array() });
         }
-        const report = await repository.createReport(req.body);
+        // add req.file image path to req.body
+        req.body.image = req.file ? req.file.path : '';
+        const report = await repository.createReport(req.body, req.file);
         return res.status(201).json({ message: 'Report created', data: report });
-    }
-    catch (err) {
+    } catch (err) {
         console.log(err);
         return res.status(500).json({ message: 'Something went wrong' });
     }

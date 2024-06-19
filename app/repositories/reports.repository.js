@@ -1,6 +1,9 @@
 const { Report, ReportVote } = require('../models');
 const logger = require('../../helpers/utils/logger');
 const { Op } = require('sequelize');
+const fs = require('fs');
+const path = require('path');
+const __basedir = path.resolve(path.dirname(''));
 
 // findAllNewReports paginated with count limit 10 and offset 0
 const findAllReports = async (limit, offset) => {
@@ -110,12 +113,25 @@ const updateReport = async (id, data) => {
 }
 
 // createReport
-const createReport = async (data) => {
+const createReport = async (data, images) => {
     try {
+        if (!data.image) {
+            return logger.error('Image is required', 400);
+        }
         const report = await Report.create(data);
+        if (!report) {
+            return logger.error('Report not found', 404);
+        }
+        if (images) {
+            const { image } = images ?? {};
+            if (image && typeof image === 'object' && image.path) {
+                const imagePath = path.join('/uploads/images', image.path.split('\\').pop());
+                fs.renameSync(image.path, imagePath);
+                await Report.update({ image: imagePath }, { where: { id: report.id } });
+            }
+        }
         return report ? report : logger.error('Report not found', 404);
-    }
-    catch (err) {
+    } catch (err) {
         console.log(err);
         return logger.error('Something went wrong', 500);
     }
