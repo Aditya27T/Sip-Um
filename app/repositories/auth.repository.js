@@ -35,13 +35,14 @@ const callbackLogin = async (code) => {
             const newUser = await models.User.create({
                 email: data.email,
                 username: data.name,
-                password: null
+                password: "null"
             });
             return newUser;
         }
 
         return user;
     } catch (err) {
+        console.log(err);
         return logger.error('Something went wrong', 500);
     }
 }

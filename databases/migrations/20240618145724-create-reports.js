@@ -26,7 +26,7 @@ module.exports = {
       },
       category: {
         type: Sequelize.STRING
-      },
+      },    
       userId: {
         type: Sequelize.INTEGER,
         references: {

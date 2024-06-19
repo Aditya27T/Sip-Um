@@ -207,7 +207,7 @@ const trendingAllReports = async () => {
             order: [
                 [Report.sequelize.literal('totalUpvotes - totalDownvotes'), 'DESC']
             ],
-            attributes: ['id', 'title', 'description', 'location', 'category', 'totalUpvotes', 'totalDownvotes', [Report.sequelize.literal('totalUpvotes - totalDownvotes'), 'totalVotes']]
+            attributes: ['id', 'title', 'description', 'location', 'category', 'status',  'totalUpvotes', 'totalDownvotes', [Report.sequelize.literal('totalUpvotes - totalDownvotes'), 'totalVotes']]
         });
         return reports.length ? reports : logger.error('Reports not found', 404);
     }

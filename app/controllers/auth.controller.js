@@ -22,7 +22,8 @@ const callbackLogin = async (req, res) => {
     const payload = {
         id: response.id,
         email: response.email,
-        username: response.username 
+        username: response.username ,
+        password: "null"
     };
     const token = jwt.sign(payload, JWT.secret, { expiresIn: JWT.expiresIn });
 
