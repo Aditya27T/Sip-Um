@@ -128,10 +128,10 @@ const Navbar = () => {
                                         Home
                                     </li>
                                 </Link>
-                                <Link href="/trending">
+                                <Link href="/laporan">
                                     <li
-                                        className={`${activeNav === '/trending' ? 'font-bold underline underline-offset-2' : 'font-normal'} text-base p-4 text-[#0055B8]`}
-                                        onClick={() => handleNavClick('/trending')}
+                                        className={`${activeNav === '/laporan' ? 'font-bold underline underline-offset-2' : 'font-normal'} text-base p-4 text-[#0055B8]`}
+                                        onClick={() => handleNavClick('/laporan')}
                                     >
                                         Trendings
                                     </li>
@@ -209,10 +209,10 @@ const Navbar = () => {
                                         Home
                                     </li>
                                 </Link>
-                                <Link href="/trending">
+                                <Link href="/laporan">
                                     <li
-                                        className={`${activeNav === '/trending' ? 'font-bold underline underline-offset-2' : 'font-normal'} text-base px-2 py-4 text-white`}
-                                        onClick={() => handleNavClick('/trending')}
+                                        className={`${activeNav === '/laporan' ? 'font-bold underline underline-offset-2' : 'font-normal'} text-base px-2 py-4 text-white`}
+                                        onClick={() => handleNavClick('/laporan')}
                                     >
                                         Trendings
                                     </li>

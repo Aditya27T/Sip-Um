@@ -64,7 +64,7 @@ export default function Main() {
           <div className="w-full flex flex-col gap-[20px] md:gap-[60px] justify-center items-center">
             <h1 className="text-center text-2xl sm:text-4xl md:text-6xl mx-[20px] sm:mx-[20px] lg:mx-[200px] xl:mx-[290px] leading-[30px] sm:leading-[40px] md:leading-[80px]">Revolutionize Your Inventory with Smart <span className="text-[#00408A]">SIP Reporting</span></h1>
             {/* nang kene handle login, misal drng login / session / token laka, kudu login sek */}
-            <Link href="/dashboard">
+            <Link href="/login">
               <Button className="w-[150px] md:w-[200px] h-[40px] md:h-[60px] font-normal rounded-[32px] bg-[#00408A] text-center text-sm md:text-xl text-white">
                 Report Now
               </Button>
