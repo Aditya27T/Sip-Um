@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 
-import { initialData } from "@/app/api/laporan/data";
+import { trendings } from "@/app/api/laporan/data";
 import Navbar from "@/components/Navbar";
 import Card from "@/components/Card";
 import Search from "@/components/Search";
@@ -9,55 +9,41 @@ import SimplePagination from "@/components/Pagination";
 import useDebounce from "@/hooks/debounce";
 
 export default function Trending() {
-    const [dataLaporan, setDataLaporan] = useState(initialData); // dumy data api
-    const [searchLaporan, setSearchLaporan] = useState("");
-    const [filteredDataLaporan, setFilteredDataLaporan] = useState([]);
-    const debouncedSearchLaporan = useDebounce(searchLaporan, 500);
-    const handleSearchChange = (event) => {
-        setSearchLaporan(event.target.value);
-    };
-
-    const fetchData = async () => {
-        try {
-            // Fetch data mgkn nang kene ae dit, misal wis ana API
-            // const response = await fetch('Link API');
-            // if (!response.ok) {
-            //     throw new Error('cannot fetch data from API');
-            // }
-            // const dataLaporan = await response.json();
-
-            console.log(dataLaporan);
-
-            const sortFilterLaporandata = dataLaporan
-                // .filter((item) => item.type === selectedType)
-                .sort(
-                    (recent, last) =>
-                        new Date(last.createdAt) - new Date(recent.createdAt)
-                );
-
-            setFilteredDataLaporan(sortFilterLaporandata);
-        } catch (error) {
-            console.error("error: ", error.message);
-        }
-    };
+    const [dataTrending, setDataTrending] = useState([]);
+    const [filteredDataTrending, setFilteredDataTrending] = useState([]);
+    const [searchTrending, setSearchTrending] = useState("");
+    const debouncedSearchTrending = useDebounce(searchTrending, 500);
 
     useEffect(() => {
-        const dataDebouce = dataLaporan
-            .filter((item) =>
-                item.namaBarang
-                    .toLowerCase()
-                    .includes(debouncedSearchLaporan.toLowerCase())
-            )
-            .sort(
-                (recent, last) => new Date(last.createdAt) - new Date(recent.createdAt)
+        const fetchData = async () => {
+    try {
+      const response = await trendings();
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+    }
+    , []);
+
+    useEffect(() => {
+        if (debouncedSearchTrending) {
+            setFilteredDataTrending(
+                dataTrending.filter((item) =>
+                    item.title.toLowerCase().includes(debouncedSearchTrending.toLowerCase())
+                )
             );
+        } else {
+            setFilteredDataTrending(dataTrending);
+        }
+    } , [debouncedSearchTrending, dataTrending]);
 
-        setFilteredDataLaporan(dataDebouce);
-    }, [debouncedSearchLaporan, dataLaporan]);
+    const handleSearchChange = (e) => {
+        setSearchTrending(e.target.value);
+    };
 
-    useEffect(() => {
-        fetchData();
-    }, []);
+    // useEffect(() => {console.log(filteredDataTrending)}, [filteredDataTrending]);
+
     return (
         <div>
             <Navbar />
@@ -85,15 +71,21 @@ export default function Trending() {
                             type="text"
                             id="search"
                             placeholder="Search"
-                            value={searchLaporan}
                             onChange={handleSearchChange}
-                        />
+                        />  
                     </div>
                 </div>
                 {/* Laporan Data */}
                 <div className="w-full h-auto mt-16 flex flex-wrap justify-between items-center gap-[14px]">
-                    {filteredDataLaporan.map((item, index) => (
-                        <Card key={index} item={item} />
+                    {filteredDataTrending?.map((item, index) => (
+                        <Card
+                            key={index}
+                            title={item.title}
+                            description={item.description}
+                            image={item.image}
+                            date={item.date}
+                            id={item.id}
+                        />
                     ))}
                 </div>
                 <SimplePagination />
