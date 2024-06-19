@@ -26,14 +26,13 @@ const dbConfig = {
         },
         logging: false
     },
-
     production: {
         username: process.env.DEV_DB_USER,
         password: process.env.PROD_DB_PASSWORD,
         database: process.env.PROD_DB_NAME,
         port: process.env.PROD_DB_PORT,
         host: process.env.PROD_DB_HOST,
-        dialect: process.env.PROD_DB_DIALECT,
+        dialect: process.env.PROD_DB_DIALECT || "mysql",
         dialectOptions: {
             bigNumberStrings: true
         },
