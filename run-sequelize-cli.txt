@@ -13,3 +13,40 @@ npm run sequelize:migrate
 
 run migration undo
 npm run sequelize:migrate:undo
+
+{
+  "description": "Membuat Fitur Upvote dan Downvote dengan Validasi Total Vote",
+  "details": "Saya ingin membuat fitur upvote dan downvote pada aplikasi Node.js saya yang menggunakan Sequelize sebagai ORM dan MySQL sebagai database. Fitur ini akan memungkinkan pengguna untuk memberikan upvote (+1) atau downvote (-1) pada setiap laporan (report). Total vote akan dihitung sebagai jumlah upvote dikurangi jumlah downvote. Jika total vote sudah kurang dari 0, pengguna tidak akan dapat melakukan downvote lagi.",
+  "requirements": [
+
+    "Buat repositry yang berhubungan dengan db :,
+    lalu buat controllers dan routenya dipisah untuk menangani permintaan upvote dan downvote, misalnya `/reports/:reportId/upvote` dan `/reports/:reportId/downvote`.",
+    "Pastikan satu pengguna hanya dapat memberikan satu upvote atau downvote pada setiap laporan.",
+    "Implementasikan validasi agar pengguna tidak dapat melakukan downvote jika total vote sudah kurang dari 0.",
+    "Buat endpoint untuk mendapatkan total upvote, downvote, dan total vote untuk setiap laporan."
+  ],
+  "examples": {
+    "upvoteResponse": {
+      "message": "Report upvoted"
+    },
+    "downvoteErrorResponse": {
+      "message": "Cannot downvote, total votes are already negative"
+    },
+    "reportsWithVotes": [
+      {
+        "id": 1,
+        "title": "Laporan Kecelakaan",
+        "totalUpvotes": 10,
+        "totalDownvotes": 3,
+        "totalVotes": 7
+      },
+      {
+        "id": 2,
+        "title": "Laporan Kebakaran",
+        "totalUpvotes": 5,
+        "totalDownvotes": 8,
+        "totalVotes": -3
+      }
+    ]
+  }
+}

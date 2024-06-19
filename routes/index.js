@@ -1,16 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const user = require('./users');
+const wrapper = require('../helpers/utils/wrapper');
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { 
-    title: 'Hello World!',
-    message: '<h1>Hello World!</h1>'
-  });
+router.get('/', (req, res) => {
+  return wrapper.response(res, 200, 'Welcome to SIP API', 200)
 });
 
-/*user*/
-router.get('/user', user);
+router.use('/auth', require('./auth'));
+router.use('/users', require('./user'));
+router.use('/reports', require('./reports'));
 
 module.exports = router;

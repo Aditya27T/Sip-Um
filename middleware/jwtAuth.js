@@ -1,6 +1,6 @@
 const jsonwebtoken = require('jsonwebtoken');
 const { error } = require('../helpers/utils/logger');
-const { JWT_SECRET } = require('../config/auth.config.cjs');
+const { secret } = require('../config/auth.config.cjs');
 const wrapper = require('../helpers/utils/wrapper');
 const { User } = require('../app/models');
 
@@ -9,26 +9,29 @@ const { User } = require('../app/models');
  * 
  */
 
-const jwtAuth = async (req, res, next) => {
-    let token = req.session.token;
+const jwtAuth = { 
+    async verifyToken(req, res, next) {
+        try {
+            const token = req.headers.authorization.split(' ')[1];
+            if (!token) {
+                return res.status(403).send({
+                    message: 'No token provided!'
+                });
+            }
+            const decoded = jsonwebtoken.verify(token, secret);
+            const user = await User.findOne({ where: { id: decoded.id } });
+            if (!user) {
+                return wrapper.response(res, 404, 'User not found', null);
+            }
 
-    if(!token) {
-        return wrapper.error(res, 'Invalid Token', null, 403);
-    } 
-
-    try {
-        const decoded = jsonwebtoken.verify(token, JWT_SECRET);
-        const user = await User.findOne({ where: { id: decoded.id } });
-
-        if(!user) {
-            return wrapper.error(res, 'Unauthorized', null, 401);
+            req.user = user;
+            next();
+        
+        } catch (err) {
+            return res.status(401).send({
+                message: 'Unauthorized!'
+            });
         }
-
-        req.user = user;
-        next();
-    } catch (err) {
-        error('jwtAuth', err.message, err);
-        return wrapper.error(res, 'Bad Request', null, 400);
     }
 }
 

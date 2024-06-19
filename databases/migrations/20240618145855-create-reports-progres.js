@@ -1,35 +1,40 @@
 'use strict';
-
 /** @type {import('sequelize-cli').Migration} */
-
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Users', {
+    await queryInterface.createTable('reports_progres', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      username: {
+      title: {
         type: Sequelize.STRING
       },
-      email: {
-        type: Sequelize.STRING,
-        validate: {
-          isEmail: true
+      description: {
+        type: Sequelize.STRING
+      },
+      image: {
+        type: Sequelize.STRING
+      },
+      userId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'users',
+          key: 'id'
         },
-        unique: true
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
       },
-      role: {
-        type: Sequelize.STRING
-      },
-      password: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      emailVerifiedat: {
-        type: Sequelize.DATE
+      reportId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'reports',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
       },
       createdAt: {
         allowNull: false,
@@ -42,6 +47,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Users');
+    await queryInterface.dropTable('reports_progres');
   }
 };
