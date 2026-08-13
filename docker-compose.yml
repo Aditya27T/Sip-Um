@@ -1,0 +1,86 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: sip-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: sip
+      MYSQL_USER: sip_user
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - sip-net
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  sip-be:
+    build:
+      context: ./apps/sip-be
+      dockerfile: Dockerfile
+    container_name: sip-be
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      APP_NAME: SIP-UM
+      APP_ENV: development
+      APP_PORT: 5000
+      APP_URL: http://localhost:5000
+      # Database
+      DEV_DB_HOST: mysql
+      DEV_DB_PORT: 3306
+      DEV_DB_NAME: sip
+      DEV_DB_USER: sip_user
+      DEV_DB_PASSWORD: ${DB_PASSWORD}
+      # JWT
+      JWT_TOKEN_SECRET: ${JWT_TOKEN_SECRET}
+      JWT_TOKEN_EXPIRES_IN: 7d
+      # Google OAuth
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+      GOOGLE_CALLBACK_URL: http://localhost:5000/auth/callback-login
+    volumes:
+      - uploads_data:/app/public/uploads
+    ports:
+      - "5000:5000"
+    networks:
+      - sip-net
+
+  sip-fe:
+    build:
+      context: ./apps/sip-fe
+      dockerfile: Dockerfile
+    container_name: sip-fe
+    restart: unless-stopped
+    depends_on:
+      - sip-be
+    environment:
+      # API URL (gunakan nama service Docker, bukan localhost)
+      NEXT_PUBLIC_API_URL: http://localhost:5000
+      # NextAuth
+      NEXTAUTH_URL: http://localhost:3000
+      NEXTAUTH_SECRET: ${NEXTAUTH_SECRET}
+      # Google OAuth
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+    ports:
+      - "3000:3000"
+    networks:
+      - sip-net
+
+networks:
+  sip-net:
+    driver: bridge
+
+volumes:
+  mysql_data:
+  uploads_data:
