@@ -1,0 +1,11 @@
+.backgroundRadial {
+    background: rgb(0,85,184);
+    background: radial-gradient(circle, rgba(36,104,182,0.6) 0%, rgba(90,145,209,0.8) 2%, rgba(137,175,222,0.8) 22%, rgba(216,228,244,0.8) 44%, rgba(255,255,255,1) 81%);
+}
+
+.laporanCardDescription {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    word-wrap: break-word;
+}
