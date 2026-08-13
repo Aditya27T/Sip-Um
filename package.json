@@ -1,0 +1,14 @@
+{
+  "name": "sip-um",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev:be": "npm run dev --workspace=apps/sip-be",
+    "dev:fe": "npm run dev --workspace=apps/sip-fe",
+    "start:be": "npm run start --workspace=apps/sip-be",
+    "start:fe": "npm run start --workspace=apps/sip-fe"
+  }
+}
